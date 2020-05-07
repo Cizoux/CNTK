@@ -33,14 +33,14 @@ ZipByteReader::ZipPtr ZipByteReader::OpenZip()
 {
     int err = ZIP_ER_OK;
     auto zip = zip_open(m_zipPath.c_str(), ZIP_RDONLY, &err);
-    if (ZIP_ER_OK != err)
-        RuntimeError("Failed to open %s, zip library error: %s", m_zipPath.c_str(), GetZipError(err).c_str());
+//    if (ZIP_ER_OK != err)
+//        RuntimeError("Failed to open %s, zip library error: %s", m_zipPath.c_str(), GetZipError(err).c_str());
 
     return ZipPtr(zip, [](zip_t* z)
     {
         assert(z != nullptr);
         int err = zip_close(z);
-        assert(ZIP_ER_OK == err);
+//        assert(ZIP_ER_OK == err);
 #ifdef NDEBUG
         UNUSED(err);
 #endif
@@ -57,8 +57,8 @@ void ZipByteReader::Register(const MultiMap& sequences)
     size_t numEntries = zip_get_num_entries(zipFile.get(), 0);
     for (size_t i = 0; i < numEntries; ++i) {
         int err = zip_stat_index(zipFile.get(), i, 0, &stat);
-        if (ZIP_ER_OK != err)
-            RuntimeError("Failed to get file info for index %d, zip library error: %s", (int)i, GetZipError(err).c_str());
+//        if (ZIP_ER_OK != err)
+//            RuntimeError("Failed to get file info for index %d, zip library error: %s", (int)i, GetZipError(err).c_str());
 
         auto sequenceInfo = sequences.find(std::string(stat.name));
         if (sequenceInfo == sequences.end())
@@ -113,7 +113,7 @@ cv::Mat ZipByteReader::Read(size_t seqId, const std::string& path, bool grayscal
             {
                 assert(f != nullptr);
                 int err = zip_fclose(f);
-                assert(ZIP_ER_OK == err);
+//                assert(ZIP_ER_OK == err);
 #ifdef NDEBUG
                 UNUSED(err);
 #endif
